@@ -1,71 +1,162 @@
 # How to install datasets
+
 All datasets should be under the same folder (say `$DATA`) and organized as follow to avoid modifying the source code. The file structure looks like
+
 ```
 $DATA/
-├── Kinetics400/
-├── UCF101/
-└── hmdb51/
+|–– caltech-101/
+|–– oxford_pets/
+|–– stanford_cars/
 ```
+
 If you have some datasets already installed somewhere else, you can create symbolic links in `$DATA/dataset_name` that point to the original data to avoid duplicate download.
 
 Datasets list:
-- [Kinetics400](#Kinetics400)
-- [UCF101](#UCF101)
-- [hmdb51](#HMDB51)
+- [Caltech101](#caltech101)
+- [OxfordPets](#oxfordpets)
+- [StanfordCars](#stanfordcars)
+- [Flowers102](#flowers102)
+- [Food101](#food101)
+- [FGVCAircraft](#fgvcaircraft)
+- [SUN397](#sun397)
+- [DTD](#dtd)
+- [EuroSAT](#eurosat)
+- [UCF101](#ucf101)
 
-Once you have installed a dataset, you can prepare it (Frames extraction and Frames encoding) with prepare_datasets.py found in the root of our repository:
-```
-python prepare_datasets.py --root_data_path $DATA --dataset "dataset_name" --backbone "vit_b16"
-```
-dataset_name is either kinetics400, hmdb51 or ucf101.
-The frames will only be extracted the first time you run the command line for each dataset. You can loop over all available backbones:
-```
-backbones=("vit_b16" "vit_l14" "vit_b32" "rn50" "rn101")
-for backbone in "${backbones[@]}"; do
-    echo "Processing with backbone: $backbone"
-    python prepare_datasets.py --root_data_path "$DATA" --dataset "dataset_name" --backbone "$backbone"
-done
-```
-### Kinetics400
-- Create a folder named `Kinetics400/` under `$DATA`.
-- Clone https://github.com/cvdfoundation/kinetics-dataset into it.
-- Comment the parts concerning the training set in k400_downloader.sh and k400_extractor.sh
-- Run k400_downloader.sh
-- Run k400_extractor.sh
 
-You should end up with a file structure that looks like this
+### Caltech101
+- Create a folder named `caltech-101/` under `$DATA`.
+- Download `101_ObjectCategories.tar.gz` from http://www.vision.caltech.edu/Image_Datasets/Caltech101/101_ObjectCategories.tar.gz and extract the file under `$DATA/caltech-101`.
+- Download `split_zhou_Caltech101.json` from this [link](https://drive.google.com/file/d/1hyarUivQE36mY6jSomru6Fjd-JzwcCzN/view?usp=sharing) and put it under `$DATA/caltech-101`. 
+
+The directory structure should look like
 ```
-Kinetics400/
---kinetics-dataset
-    -- k400_targz
-        --...
-    -- k400
-        -- annotations
-        -- test
-        -- val
+caltech-101/
+|–– 101_ObjectCategories/
+|–– split_zhou_Caltech101.json
+```
+
+### OxfordPets
+- Create a folder named `oxford_pets/` under `$DATA`.
+- Download the images from https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz.
+- Download the annotations from https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz.
+- Download `split_zhou_OxfordPets.json` from this [link](https://drive.google.com/file/d/1501r8Ber4nNKvmlFVQZ8SeUHTcdTTEqs/view?usp=sharing). 
+
+The directory structure should look like
+```
+oxford_pets/
+|–– images/
+|–– annotations/
+|–– split_zhou_OxfordPets.json
+```
+
+### StanfordCars
+- Create a folder named `stanford_cars/` under `$DATA`.
+- Download the train images http://ai.stanford.edu/~jkrause/car196/cars_train.tgz.
+- Download the test images http://ai.stanford.edu/~jkrause/car196/cars_test.tgz.
+- Download the train labels https://ai.stanford.edu/~jkrause/cars/car_devkit.tgz.
+- Download the test labels http://ai.stanford.edu/~jkrause/car196/cars_test_annos_withlabels.mat.
+- Download `split_zhou_StanfordCars.json` from this [link](https://drive.google.com/file/d/1ObCFbaAgVu0I-k_Au-gIUcefirdAuizT/view?usp=sharing).
+
+The directory structure should look like
+```
+stanford_cars/
+|–– cars_test\
+|–– cars_test_annos_withlabels.mat
+|–– cars_train\
+|–– devkit\
+|–– split_zhou_StanfordCars.json
+```
+
+### Flowers102
+- Create a folder named `oxford_flowers/` under `$DATA`.
+- Download the images and labels from https://www.robots.ox.ac.uk/~vgg/data/flowers/102/102flowers.tgz and https://www.robots.ox.ac.uk/~vgg/data/flowers/102/imagelabels.mat respectively.
+- Download `cat_to_name.json` from [here](https://drive.google.com/file/d/1AkcxCXeK_RCGCEC_GvmWxjcjaNhu-at0/view?usp=sharing). 
+- Download `split_zhou_OxfordFlowers.json` from [here](https://drive.google.com/file/d/1Pp0sRXzZFZq15zVOzKjKBu4A9i01nozT/view?usp=sharing).
+
+The directory structure should look like
+```
+oxford_flowers/
+|–– cat_to_name.json
+|–– imagelabels.mat
+|–– jpg/
+|–– split_zhou_OxfordFlowers.json
+```
+
+### Food101
+- Download the dataset from https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/ and extract the file `food-101.tar.gz` under `$DATA`, resulting in a folder named `$DATA/food-101/`.
+- Download `split_zhou_Food101.json` from [here](https://drive.google.com/file/d/1QK0tGi096I0Ba6kggatX1ee6dJFIcEJl/view?usp=sharing).
+
+The directory structure should look like
+```
+food-101/
+|–– images/
+|–– license_agreement.txt
+|–– meta/
+|–– README.txt
+|–– split_zhou_Food101.json
+```
+
+### FGVCAircraft
+- Download the data from https://www.robots.ox.ac.uk/~vgg/data/fgvc-aircraft/archives/fgvc-aircraft-2013b.tar.gz.
+- Extract `fgvc-aircraft-2013b.tar.gz` and keep only `data/`.
+- Move `data/` to `$DATA` and rename the folder to `fgvc_aircraft/`.
+
+The directory structure should look like
+```
+fgvc_aircraft/
+|–– images/
+|–– ... # a bunch of .txt files
+```
+
+### SUN397
+- Create a folder named  `sun397/` under `$DATA`.
+- Download the images http://vision.princeton.edu/projects/2010/SUN/SUN397.tar.gz.
+- Download the partitions https://vision.princeton.edu/projects/2010/SUN/download/Partitions.zip.
+- Extract these files under `$DATA/sun397/`.
+- Download `split_zhou_SUN397.json` from this [link](https://drive.google.com/file/d/1y2RD81BYuiyvebdN-JymPfyWYcd8_MUq/view?usp=sharing).
+
+The directory structure should look like
+```
+sun397/
+|–– SUN397/
+|–– split_zhou_SUN397.json
+|–– ... # a bunch of .txt files
+```
+
+### DTD
+- Download the dataset from https://www.robots.ox.ac.uk/~vgg/data/dtd/download/dtd-r1.0.1.tar.gz and extract it to `$DATA`. This should lead to `$DATA/dtd/`.
+- Download `split_zhou_DescribableTextures.json` from this [link](https://drive.google.com/file/d/1u3_QfB467jqHgNXC00UIzbLZRQCg2S7x/view?usp=sharing).
+
+The directory structure should look like
+```
+dtd/
+|–– images/
+|–– imdb/
+|–– labels/
+|–– split_zhou_DescribableTextures.json
+```
+
+### EuroSAT
+- Create a folder named `eurosat/` under `$DATA`.
+- Download the dataset from http://madm.dfki.de/files/sentinel/EuroSAT.zip and extract it to `$DATA/eurosat/`.
+- Download `split_zhou_EuroSAT.json` from [here](https://drive.google.com/file/d/1Ip7yaCWFi0eaOFUGga0lUdVi_DDQth1o/view?usp=sharing).
+
+The directory structure should look like
+```
+eurosat/
+|–– 2750/
+|–– split_zhou_EuroSAT.json
 ```
 
 ### UCF101
-Go to https://www.crcv.ucf.edu/data/UCF101.php and download the rar archive into "$DATA/UCF101". Decompress it and you should end up with a file structure that looks like this:
-```
-UCF101/
-    -- ApplyEyeMakeup
-    -- ApplyLipstick
-    --...
-```
+- Create a folder named `ucf101/` under `$DATA`.
+- Download the zip file `UCF-101-midframes.zip` from [here](https://drive.google.com/file/d/10Jqome3vtUA2keJkNanAiFpgbyC9Hc2O/view?usp=sharing) and extract it to `$DATA/ucf101/`. This zip file contains the extracted middle video frames.
+- Download `split_zhou_UCF101.json` from this [link](https://drive.google.com/file/d/1I0S0q91hJfsV9Gf4xDIjgDq4AqBNJb1y/view?usp=sharing).
 
-
-Then, go to https://github.com/KaiyangZhou/CoOp/blob/main/DATASETS.md#ucf101 and download split_zhou_UCF101.json. Place it at '$DATA/UCF101/'.
-
-### HMDB51
-Go to https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/#Downloads and download hmdb51_org.rar into "$DATA/hmdb51" and decompress it.
-You should obtain a file structure that looks like this 
-
+The directory structure should look like
 ```
-hmdb51/
-    -- brush_hair
-    -- cartwheel
-    --...
+ucf101/
+|–– UCF-101-midframes/
+|–– split_zhou_UCF101.json
 ```
-Then, download 'three splits for the hmdb51' from https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/#Downloads .
-Create a folder 'splits' in $DATA/hmdb51/ and place all the text files inside.
