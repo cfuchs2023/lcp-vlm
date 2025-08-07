@@ -22,7 +22,6 @@ Datasets list:
 - [DTD](#dtd)
 - [EuroSAT](#eurosat)
 - [UCF101](#ucf101)
-- [ImageNet](#imagenet)
 
 
 ### Caltech101
